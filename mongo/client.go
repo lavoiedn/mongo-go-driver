@@ -450,7 +450,8 @@ func (c *Client) ListDatabases(ctx context.Context, filter interface{}, opts ...
 	}
 
 	filterDoc, err := transformBsoncoreDocument(c.registry, filter)
-	if err != nil {
+	// "filter" is optional in "listDatabases", ignore nil
+	if err != nil && err != ErrNilDocument {
 		return ListDatabasesResult{}, err
 	}
 
